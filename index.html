@@ -5,11 +5,23 @@
   <title>Filament Scanner</title>
 </head>
 <body>
-  <p>Opening Filament Scanner for S047...</p>
+  <p id="status">Opening Filament Scanner...</p>
 
   <script>
-    window.location.href =
-      "shortcuts://run-shortcut?name=Filament%20Scanner&input=text&text=S047";
+    const params = new URLSearchParams(window.location.search);
+    const spool = (params.get("spool") || "").toUpperCase();
+
+    if (/^S\d{3}$/.test(spool)) {
+      document.getElementById("status").textContent =
+        "Opening Filament Scanner for " + spool + "...";
+
+      window.location.href =
+        "shortcuts://run-shortcut?name=Filament%20Scanner&input=text&text=" +
+        encodeURIComponent(spool);
+    } else {
+      document.getElementById("status").textContent =
+        "No valid spool ID was provided.";
+    }
   </script>
 </body>
 </html>
